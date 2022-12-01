@@ -1,0 +1,29 @@
+@echo off
+:Begin
+
+SET mypath=%~dp0
+set anio=%date:~6,4%
+set mes=%date:~3,2%
+set dia=%date:~0,2%
+set hora=%time:~0,2%
+set hora=%hora: =0%
+set minuto=%time:~3,2%
+set segundo=%time:~6,2%
+
+@echo off
+
+rem This script will attempt to find this systems Dell Service Tag
+rem The tag will be recorded in info.txt on the desktop
+
+mode 15,1
+title [~]
+
+set FILE="%mypath:~0,-1%\%mes%%dia%%hora%%minuto%%segundo%%COMPUTERNAME%.txt"
+
+wmic computersystem get "Model","Manufacturer", "Name", "UserName" >>%FILE%
+wmic bios get serialnumber >>%FILE%
+wmic csproduct get vendor, version >>%FILE%
+start notepad %FILE%
+
+exit
+goto begin
